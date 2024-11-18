@@ -8,7 +8,7 @@ import Usuario.Estudiante;
 
 public class Examen extends Actividad {
     private static List<Pregunta> preguntas;
-    private String estado; 
+    private static String estado; 
     
     
     public Examen(String titulo, String descripcion, String objetivo, String dificultad, String tipo,
@@ -18,6 +18,9 @@ public class Examen extends Actividad {
         this.estado = "Pendiente";
 	}
 
+    
+    
+    
 	
 
 
@@ -27,15 +30,6 @@ public class Examen extends Actividad {
         System.out.println("Pregunta agregada al examen: " + pregunta.getEnunciado());
     }
 
-    public void entregarExamen(Estudiante estudiante, List<String> respuestas) {
-        if (estado.equals("Pendiente")) {
-            estado = "Entregado";
-            System.out.println("El estudiante ha entregado el examen: " + getDescripcion());
-            calificarExamen(estudiante, respuestas);
-        } else {
-            System.out.println("El examen ya ha sido entregado.");
-        }
-    }
 
     public void calificarExamen(Estudiante estudiante, List<String> respuestas) {
         double puntajeObtenido = 0;
@@ -50,6 +44,16 @@ public class Examen extends Actividad {
         System.out.println("El examen del estudiante ha sido calificado con: " + puntajeObtenido);
     }
 
+    
+    public static void entregarExamen(List<String> respuestas) {
+        if (estado.equals("Pendiente")) {
+            estado = "Entregado";
+            System.out.println("El examen ha sido entregado.");
+            //calificarExamen(estudiante, respuestas);
+        } else {
+            System.out.println("El examen ya ha sido entregado.");
+        }
+    }
 
     public static List<Pregunta> getPreguntas() {
         return preguntas;

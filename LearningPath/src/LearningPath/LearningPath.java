@@ -15,6 +15,7 @@ public class LearningPath {
     private String dificultad; 
     private int duracionTotalMinutos;
     public static List<Reseña> reseñas = new ArrayList<>();
+    public static List<Double> ratings = new ArrayList<>();
     private static double rating;
     private Date fechaCreacion;
     private LocalDateTime fechaModificacion;
@@ -29,7 +30,7 @@ public class LearningPath {
         this.fechaCreacion = new Date();
         this.fechaModificacion = LocalDateTime.now();
         this.version = version;
-        this.duracionTotalMinutos = 0;
+        this.duracionTotalMinutos = duracionTotalMinutos;
         this.rating = 0.0;
         
     }
@@ -43,56 +44,21 @@ public class LearningPath {
 		
         
     }
-    
-//    public double calcularRating() {
-//        if (actividades.isEmpty()) {
-//            System.out.println("No hay actividades disponibles para calcular el rating.");
-//            return 0.0;
-//        }
-//
-//        double sumaRatings = 0.0;
-//        int cantidadRatings = 0;
-//
-//        for (Actividad actividad : actividades) {
-//            
-//            double ratingActividad = getRating(); 
-//            if (ratingActividad >= 0) { 
-//                sumaRatings += ratingActividad;
-//                cantidadRatings++;
-//            }
-//        }
-//
-//        if (cantidadRatings == 0) {
-//            System.out.println("No hay ratings válidos para calcular el promedio.");
-//            return 0.0;
-//        }
-//
-//        // Calcular promedio
-//        this.rating = sumaRatings / cantidadRatings;
-//        System.out.println("El nuevo rating promedio del Learning Path es: " + this.rating);
-//        return this.rating;
-//    }
-
-
-	public static void añadirReseña(LearningPath lp, double calificacion, String feedback) {
-		Reseña reseña = new Reseña(lp, calificacion, feedback);
-	    
-	    reseñas.add(reseña);
-	    //actualizarRatingPromedio();
-		
-	}
 	
-//	private static void actualizarRatingPromedio() {
-//        double sumaCalificaciones = reseñas.stream().mapToDouble(Reseña::getCalificacion).sum();
-//        double rating = sumaCalificaciones / reseñas.size();
-//    }
-
     public static List<Reseña> getReseñas() {
 		return reseñas;
 	}
     
     public void actualizarRating() {
-    	double rating;
+    	List<Double> calificaciones = getRatings();
+    	Double suma = 0.0;
+    	    	
+    	for (Double i : calificaciones) {
+    		suma += i;
+    	}
+    	double calificacion = suma/calificaciones.size();
+    	setRating(calificacion);
+    	
     }
 
 
@@ -171,4 +137,14 @@ public class LearningPath {
     public void setActividades(List<Actividad> actividades) {
         this.actividades = actividades;
     }
+
+
+	public static List<Double> getRatings() {
+		return ratings;
+	}
+
+
+	public static void setRatings(List<Double> ratings) {
+		LearningPath.ratings = ratings;
+	}
 }

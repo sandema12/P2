@@ -4,12 +4,10 @@ import LearningPath.LearningPath;
 
 public class Reseña {
 
-	private LearningPath lp;
 	private double calificacion;
 	private String feedback;
 	
-	public Reseña(LearningPath lp, double calificacion, String feedback) {
-		this.lp = lp;
+	public Reseña( double calificacion, String feedback) {
 		this.calificacion = calificacion;
 		this.feedback = feedback;
 		

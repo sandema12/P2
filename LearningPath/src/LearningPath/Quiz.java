@@ -8,18 +8,28 @@ import Usuario.Estudiante;
 
 public class Quiz extends Actividad {
 
-    public Quiz(String titulo, String descripcion, String objetivo, String dificultad, String tipo, boolean obligatoria,
+	private static String estado;
+	
+	public Quiz(String titulo, String descripcion, String objetivo, String dificultad, String tipo, boolean obligatoria,
 			int duracionMinutos, LocalDate fechaLimite) {
 		super(titulo, descripcion, objetivo, dificultad, tipo, obligatoria, duracionMinutos, fechaLimite);
 		this.preguntas = new ArrayList<>();
         this.notaMinima = notaMinima;
+        this.estado = "Pendiente";
 	}
 
 	private static List<Pregunta> preguntas;
     private double notaMinima;
 
 
-
+    public static void entregarQuiz(ArrayList respuestas) {
+    	if (estado.equals("Pendiente")) {
+            estado = "Entregada";
+            System.out.println("El quiz ha sido entregado.");
+        } else {
+            System.out.println("El quiz ya ha sido entregado.");
+        }
+    }
 
     public void agregarPregunta(Pregunta pregunta) {
         preguntas.add(pregunta);

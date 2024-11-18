@@ -6,6 +6,8 @@ import java.util.ArrayList;
 
 import java.util.List;
 
+import Consola.ConsolaRespuestaExamen;
+import Consola.ConsolaRespuestaQuiz;
 import Usuario.Estudiante;
 import LearningPath.RecursoEducativo;
 import LearningPath.Tarea;
@@ -39,7 +41,7 @@ public class Actividad {
     }
 
 
-	public static void completarActividad(Actividad actividad) {
+    public static void completarActividad(Actividad actividad) {
 		
 		if (actividad.getTipo().equalsIgnoreCase("Recurso Educativo")) {
 			RecursoEducativo.completarRecurso();
@@ -48,29 +50,35 @@ public class Actividad {
 			Tarea.entregarTarea();
 		}
 		else if (actividad.getTipo().equalsIgnoreCase("Quiz")) {
-			System.out.println("Estas son las preguntas a resolver");
+			ArrayList respuestas = new ArrayList<>();
+			ConsolaRespuestaQuiz consolaRespQuiz = new ConsolaRespuestaQuiz();
+			System.out.println("Estas son las preguntas del quiz: ");
 			List<Pregunta> preguntas = Quiz.getPreguntas();
 			for (Pregunta preg : preguntas) {
 				System.out.println(preg);
+				consolaRespQuiz.mostrarMenu();
 			}
+			respuestas = consolaRespQuiz.getRespuestas();
+			Quiz.entregarQuiz(respuestas);
 		}
 		else if (actividad.getTipo().equalsIgnoreCase("Examen")) {
-			System.out.println("Estas son las preguntas a resolver");
+			List<String> respuestas = new ArrayList<>();
+			ConsolaRespuestaExamen consolaRespExamen = new ConsolaRespuestaExamen();
+			System.out.println("Estas son las preguntas del examen: ");
 			List<Pregunta> preguntas = Examen.getPreguntas();
 			for (Pregunta preg : preguntas) {
 				System.out.println(preg);
+				consolaRespExamen.mostrarMenu();
 			}
+			respuestas = consolaRespExamen.getRespuestas();
+			Examen.entregarExamen(respuestas);
+			
 		}
         System.out.println("El estudiante ha completado la actividad");
         resultado = "Completada";
     }
 
-    public boolean verificarPrerequisitos(Estudiante estudiante) {
-        System.out.println("Verificando requisitos previos para la actividad: " + descripcion);
-
-        return true; 
-    }
-
+	
     public LocalDate calcularFechaLimite() {
         return fechaLimite;
     }

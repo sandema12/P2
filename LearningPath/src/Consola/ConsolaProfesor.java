@@ -26,12 +26,12 @@ public class ConsolaProfesor {
         
         do {
         
-            System.out.println("1. Crear Learning Path");
-            System.out.println("2. Editar Learning Path");
-            System.out.println("3. Calificar actividad");
-            System.out.println("4. Dejar reseña");
-            System.out.println("5. Ver Learning Path");
-            System.out.println("6. Volver");
+            System.out.println("1. Crear Learning Path"); //bien
+            System.out.println("2. Editar Learning Path");//bien
+            System.out.println("3. Calificar actividad");//bien
+            System.out.println("4. Dejar reseña");//bien
+            System.out.println("5. Ver Learning Path");//bien
+            System.out.println("6. Volver");//bien
             System.out.print("Elija una opción: ");
             opcion = entrada.nextInt();
             entrada.nextLine();
@@ -115,54 +115,53 @@ public class ConsolaProfesor {
                 
                 
                 
-                
+            //Calificar actividad    
             case 3:
             	
+            	System.out.println("Ingrese el nombre del estudiante a calificar:");
+            	String nombreEstudiante = entrada.nextLine();
+            	
             	System.out.println("Ingrese el nombre del Learning Path donde se encuentra la actividad:");
-            	String nombreLp = entrada.nextLine();
+            	String nombreLearningPath = entrada.nextLine();
+            	
             	System.out.println("Ingrese el nombre de la actividad a calificar:");
-        	    String nombreAct = entrada.nextLine();
+        	    String nombreActividad = entrada.nextLine();
+        	    
+        	    
         	    
         	    
         	    System.out.println("Ingrese la calificacion (Exitoso/Inexitoso");
         	    String resultado = entrada.nextLine();
             	
-                Profesor.calificarActividad();
+                Profesor.calificarActividad(nombreEstudiante, nombreLearningPath, nombreActividad, resultado);
                 break;
                 
-                
+               
+            //Dejar reseña
             case 4:
-            	//Dejar reseña
-            	System.out.println("Ingrese el nombre del Learning Path a modificar");
-            	String nombre1 = entrada.nextLine();
-            	List<LearningPath> lp_Lista1 = Profesor.getLearningPathsCreados();
-            	LearningPath lp1 = Profesor.getLearningPath(lp_Lista1, nombre1);
-            
-            	System.out.print("Ingrese el ID del Learning Path o Actividad para dejar una reseña: ");
-        	    String id = entrada.nextLine(); 
-        	    
+            	
+            	System.out.println("Ingrese el nombre del Learning Path a reseñar");
+            	String nombreLp = entrada.nextLine();
 
         	    System.out.print("Ingrese un rating (1-5): ");
         	    double calificacion = entrada.nextDouble();
         	    entrada.nextLine(); 
 
-
         	    if (calificacion < 1 || calificacion > 5) {
         	        System.out.println("El rating debe estar entre 1 y 5.");
         	        return;
         	    }
-
-
+        	    
         	    System.out.print("Ingrese su feedback: ");
         	    String feedback = entrada.nextLine();
             	
-                LearningPath.añadirReseña(lp1, calificacion, feedback);
+                Profesor.añadirReseña(nombreLp, calificacion, feedback);
                 System.out.println("Reseña dejada exitosamente.");
                 
                 break;
                 
             case 5:
-            	
+            	//Ver learning path
             	System.out.println("Ingrese el nombre del Learning Path:");
             	String nombre11 = entrada.nextLine();
             	List<LearningPath> lp_Lista11 = Profesor.getLearningPathsCreados();
@@ -180,7 +179,7 @@ public class ConsolaProfesor {
             	
             	
             case 6:
-                System.out.println("Fin.");
+                System.out.println("Cerrar sesión.");
                 break;
             default:
                 System.out.println("La opción no es válida");

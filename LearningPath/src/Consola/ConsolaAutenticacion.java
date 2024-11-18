@@ -9,8 +9,14 @@ import Usuario.Profesor;
 import Usuario.Usuario;
 
 public class ConsolaAutenticacion {
-	List<Usuario> usuarios = new ArrayList<>();
-    private Scanner entrada;
+	private static List<Usuario> usuarios = new ArrayList<>();
+	private static List<Estudiante> estudiantes = new ArrayList<>();
+	private static List<Profesor> profesores = new ArrayList<>();
+	
+
+
+
+	private Scanner entrada;
 	
 	
     public ConsolaAutenticacion() {
@@ -65,12 +71,20 @@ public class ConsolaAutenticacion {
         String rol = entrada.nextLine();		
 		
 		Usuario nuevoUsuario;
+		Estudiante nuevoEstudiante;
+		Profesor nuevoProfesor;
 		
 		if (rol.equalsIgnoreCase("Profesor")) {
             nuevoUsuario = new Profesor(username, password, rol);
+            nuevoProfesor = new Profesor(username, password, rol);
+            profesores.add(nuevoProfesor);
+            
             
         } else if (rol.equalsIgnoreCase("Estudiante")) {
             nuevoUsuario = new Estudiante(username, password, rol);
+            nuevoEstudiante = new Estudiante(username, password, rol);
+            estudiantes.add(nuevoEstudiante);
+            
         } else {
             System.out.println("Rol no válido. El registro ha sido cancelado.");
             return;
@@ -117,7 +131,7 @@ public class ConsolaAutenticacion {
         
 	}
 	
-	public List<Usuario> getUsuarios() {
+	public static List<Usuario> getUsuarios() {
 		return usuarios;
 	}
 
@@ -126,5 +140,23 @@ public class ConsolaAutenticacion {
 		this.usuarios = usuarios;
 	}
 	
+	public static List<Estudiante> getEstudiantes() {
+		return estudiantes;
+	}
+
+
+	public static void setEstudiantes(List<Estudiante> estudiantes) {
+		ConsolaAutenticacion.estudiantes = estudiantes;
+	}
+
+
+	public static List<Profesor> getProfesores() {
+		return profesores;
+	}
+
+
+	public static void setProfesores(List<Profesor> profesores) {
+		ConsolaAutenticacion.profesores = profesores;
+	}
 }
 	
