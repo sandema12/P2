@@ -1,9 +1,12 @@
 package Consola;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import Persistencia.centralPersistenciaUsuarios;
 import Usuario.Estudiante;
 import Usuario.Profesor;
 import Usuario.Usuario;
@@ -15,16 +18,21 @@ public class ConsolaAutenticacion {
 	
 
 
-
+	centralPersistenciaUsuarios centralPersistenciaUsuarios;
 	private Scanner entrada;
 	
 	
     public ConsolaAutenticacion() {
         entrada = new Scanner(System.in);
+        centralPersistenciaUsuarios = new centralPersistenciaUsuarios(this);
     }
 	
 	
-	public void mostrarMenu() {
+	public void mostrarMenu() throws FileNotFoundException, IOException, ClassNotFoundException {
+		
+		centralPersistenciaUsuarios.cargarUsuarios();
+		centralPersistenciaUsuarios.cargarEstudiantes();
+		centralPersistenciaUsuarios.cargarProfesores();
 		
         int opcion;
         
@@ -59,7 +67,7 @@ public class ConsolaAutenticacion {
 
 
 
-	private void crearUsuario() {
+	private void crearUsuario() throws FileNotFoundException, IOException, ClassNotFoundException {
 		
         System.out.print("Nombre de usuario: ");
         String username = entrada.nextLine();
@@ -78,12 +86,14 @@ public class ConsolaAutenticacion {
             nuevoUsuario = new Profesor(username, password, rol);
             nuevoProfesor = new Profesor(username, password, rol);
             profesores.add(nuevoProfesor);
+            centralPersistenciaUsuarios.persistirProfesores(nuevoProfesor);
             
             
         } else if (rol.equalsIgnoreCase("Estudiante")) {
             nuevoUsuario = new Estudiante(username, password, rol);
             nuevoEstudiante = new Estudiante(username, password, rol);
             estudiantes.add(nuevoEstudiante);
+            centralPersistenciaUsuarios.persistirEstudiantes(nuevoEstudiante);
             
         } else {
             System.out.println("Rol no válido. El registro ha sido cancelado.");
@@ -92,11 +102,14 @@ public class ConsolaAutenticacion {
 		
 		usuarios.add(nuevoUsuario);
 		
+		
+		centralPersistenciaUsuarios.persistirUsuarios(nuevoUsuario);
+		
         System.out.println("Usuario registrado exitosamente.");
 		
 	}	
 	
-	private void autenticacion() {
+	private void autenticacion() throws FileNotFoundException, ClassNotFoundException, IOException {
 		System.out.print("Nombre de usuario: ");
         String username = entrada.nextLine();
         System.out.print("Contraseña: ");
@@ -137,7 +150,7 @@ public class ConsolaAutenticacion {
 
 
 	public void setUsuarios(List<Usuario> usuarios) {
-		this.usuarios = usuarios;
+		ConsolaAutenticacion.usuarios = usuarios;
 	}
 	
 	public static List<Estudiante> getEstudiantes() {

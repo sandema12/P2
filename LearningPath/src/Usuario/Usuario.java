@@ -1,8 +1,15 @@
 package Usuario;
 
-public class Usuario {
+import java.io.Serializable;
+import java.util.ArrayList;
 
-    private String username;
+public class Usuario implements Serializable{
+
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 6470736694879684439L;
+	private String username;
     private String password;
     private String rol; 
 
@@ -16,6 +23,18 @@ public class Usuario {
 
     public String getUsername() {
         return username;
+    }
+    
+    public static ArrayList<String> getUsernames(ArrayList<Usuario> usuarios) {
+    	
+    	ArrayList<String> usernames = new ArrayList<>();
+    	for (Usuario i : usuarios) {
+    		usernames.add(i.getUsername());
+    		
+    	}
+    	
+    	
+        return usernames;
     }
 
     public void setUsername(String username) {

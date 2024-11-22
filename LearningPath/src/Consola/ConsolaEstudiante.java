@@ -1,11 +1,13 @@
 package Consola;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 import LearningPath.Actividad;
 import LearningPath.LearningPath;
+import Persistencia.CentralPersistenciaLearningPath;
 import Usuario.Profesor;
 import Usuario.Estudiante;
 
@@ -13,13 +15,16 @@ import Usuario.Estudiante;
 public class ConsolaEstudiante {
     
     private Scanner entrada;
+    private CentralPersistenciaLearningPath cpl;
     
 
     public ConsolaEstudiante() {
         entrada = new Scanner(System.in);
+        cpl = new CentralPersistenciaLearningPath();
     }
     
-    public void mostrarMenu() {
+    public void mostrarMenu() throws ClassNotFoundException, IOException {
+    	cpl.cargarLearningPaths();
         int opcion;
         
         do {
@@ -60,7 +65,7 @@ public class ConsolaEstudiante {
     
     private void verLearningPaths() {
         
-    	List<LearningPath> lp_creados = Profesor.getLearningPathsCreados();
+    	List<LearningPath> lp_creados = ConsolaProfesor.getLearningPathsCreados();
     	for (LearningPath lp : lp_creados) {
     		System.out.println("-------------------------------");
     		System.out.println("Nombre LP: " + lp.getTitulo());
@@ -78,7 +83,7 @@ public class ConsolaEstudiante {
         
     	System.out.print("Ingrese el nombre del Learning Path que desea inscribir: ");
     	String inscribir = entrada.nextLine(); 
-    	List<LearningPath> lp_creados = Profesor.getLearningPathsCreados();
+    	List<LearningPath> lp_creados = ConsolaProfesor.getLearningPathsCreados();
     	for (LearningPath lp : lp_creados) {
     		if (lp.getTitulo().equals(inscribir)) {
     			Estudiante.inscribirseEnLearningPath(lp);
@@ -94,7 +99,7 @@ public class ConsolaEstudiante {
     	
     	System.out.print("Ingrese el nombre del Learning Path donde se encuentra la actividad: ");
     	String nombre = entrada.nextLine(); 
-    	List<LearningPath> lp_creados = Profesor.getLearningPathsCreados();
+    	List<LearningPath> lp_creados = ConsolaProfesor.getLearningPathsCreados();
     	LearningPath lp =  Profesor.getLearningPath(lp_creados, nombre);
     	
     	System.out.print("Ingrese la actividad que desea realizar: ");
@@ -103,7 +108,8 @@ public class ConsolaEstudiante {
     	List<Actividad> actividadesCreadas = lp.getActividades();
     	for (Actividad act : actividadesCreadas) {
     		if (act.getTitulo().equals(actividad)) {
-    			Actividad.completarActividad(act);
+    			Actividad actividad2 = new Actividad(null, null, null, null, null, false, 0, null);
+				actividad2.completarActividad(act);
     		}
     	}
     	}
@@ -130,7 +136,7 @@ public class ConsolaEstudiante {
         
     }
 
-    private void dejarReseña() {
+    private void dejarReseña() throws ClassNotFoundException, IOException {
         
     	System.out.println("Ingrese el nombre del Learning Path a reseñar");
     	String nombreLp = entrada.nextLine();

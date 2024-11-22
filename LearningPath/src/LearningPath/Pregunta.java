@@ -1,8 +1,9 @@
 package LearningPath;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Pregunta {
+public class Pregunta  {
 
     private String enunciado; 
     private List<String> opciones;

@@ -1,13 +1,22 @@
 package Usuario;
 
+import java.io.Serializable;
+
 import LearningPath.LearningPath;
 
-public class Reseña {
+public class Reseña implements Serializable {
 
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6051678988131258851L;
+	private String nombreLp;
 	private double calificacion;
 	private String feedback;
 	
-	public Reseña( double calificacion, String feedback) {
+	public Reseña(String nombreLp, double calificacion, String feedback) {
+		this.setNombreLp(nombreLp);
 		this.calificacion = calificacion;
 		this.feedback = feedback;
 		
@@ -28,6 +37,16 @@ public class Reseña {
 
 	public void setFeedback(String feedback) {
 		this.feedback = feedback;
+	}
+
+
+	public String getNombreLp() {
+		return nombreLp;
+	}
+
+
+	public void setNombreLp(String nombreLp) {
+		this.nombreLp = nombreLp;
 	}
 	
 	

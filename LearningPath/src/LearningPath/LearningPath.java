@@ -1,5 +1,6 @@
 package LearningPath;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -8,49 +9,76 @@ import java.util.List;
 
 import Usuario.Reseña;
 
-public class LearningPath {
+public class LearningPath  implements Serializable{
+	
     
-    private String titulo;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 498287084730697217L;
+	private String titulo;
     private String descripcion;
     private String dificultad; 
     private int duracionTotalMinutos;
-    public static List<Reseña> reseñas = new ArrayList<>();
-    public static List<Double> ratings = new ArrayList<>();
-    private static double rating;
-    private Date fechaCreacion;
+    public List<Reseña> reseñas = new ArrayList<>();
+    public List<Double> ratings = new ArrayList<>();
+    private double rating;
+    private LocalDateTime fechaCreacion;
     private LocalDateTime fechaModificacion;
     private int version;
-    private static List<Actividad> actividades = new ArrayList<>();
+    private List<Actividad> actividades = new ArrayList<>();
 
    
     public LearningPath(String titulo, String descripcion, String dificultad, String tipo, int duracionTotalMinutos, double rating, LocalDateTime fechaCreacion, LocalDateTime fechaModificacion,  int version, List<Actividad> actividades, List<Reseña> reseñas) {
         this.titulo = titulo;
         this.descripcion = descripcion;
         this.dificultad = dificultad;
-        this.fechaCreacion = new Date();
+        this.fechaCreacion = LocalDateTime.now();
         this.fechaModificacion = LocalDateTime.now();
         this.version = version;
         this.duracionTotalMinutos = duracionTotalMinutos;
-        this.rating = 0.0;
+        this.rating = rating;
         
     }
 
    
-    public static void agregarActividad(String titulo, String descripcion, String objetivo, String dificultad, String tipo,  boolean obligatoria, int duracionMinutos, LocalDate fechaLimite) {
+    public Actividad agregarActividad(String titulo, String descripcion, String objetivo, String dificultad, String tipo,  boolean obligatoria, int duracionMinutos, LocalDate fechaLimite) {
         
     	Actividad nuevaActividad = new Actividad(titulo, descripcion, objetivo, dificultad, tipo,  obligatoria, duracionMinutos, fechaLimite);
         
 		actividades.add(nuevaActividad);
 		
+		return nuevaActividad;
+		
         
     }
 	
-    public static List<Reseña> getReseñas() {
+    public List<Reseña> getReseñas() {
 		return reseñas;
 	}
     
-    public void actualizarRating() {
-    	List<Double> calificaciones = getRatings();
+    public ArrayList<String> getFeedbacks(LearningPath lp) {
+    	
+    	ArrayList<Reseña> reseñas = (ArrayList<Reseña>) lp.getReseñas();
+    	ArrayList<String> feedback = new ArrayList<>();
+    	
+    	for (Reseña i: reseñas) {
+    		String texto = i.getFeedback();
+    		feedback.add(texto);
+    	}
+    	
+		return feedback;
+	}
+    
+    public double actualizarRating() {
+    	List<Double> calificaciones = new ArrayList<>();
+    	List<Reseña> reseñas = getReseñas();
+    	
+    	for (Reseña res: reseñas) {
+    		double rating = res.getCalificacion();
+    		calificaciones.add(rating);
+    		
+    	}
     	Double suma = 0.0;
     	    	
     	for (Double i : calificaciones) {
@@ -58,12 +86,13 @@ public class LearningPath {
     	}
     	double calificacion = suma/calificaciones.size();
     	setRating(calificacion);
+		return calificacion;
     	
     }
 
 
-	public static void setReseñas(List<Reseña> reseñas) {
-		LearningPath.reseñas = reseñas;
+	public void setReseñas(List<Reseña> reseñas) {
+		this.reseñas = reseñas;
 	}
 
 
@@ -110,7 +139,7 @@ public class LearningPath {
         this.rating = rating;
     }
 
-    public Date getFechaCreacion() {
+    public LocalDateTime getFechaCreacion() {
         return fechaCreacion;
     }
 
@@ -130,7 +159,7 @@ public class LearningPath {
         this.version = version;
     }
 
-    public static List<Actividad> getActividades() {
+    public List<Actividad> getActividades() {
         return actividades;
     }
 
@@ -139,12 +168,14 @@ public class LearningPath {
     }
 
 
-	public static List<Double> getRatings() {
+	public List<Double> getRatings() {
 		return ratings;
 	}
 
 
-	public static void setRatings(List<Double> ratings) {
-		LearningPath.ratings = ratings;
+	public void setRatings(List<Double> ratings) {
+		this.ratings = ratings;
 	}
+	
+	
 }

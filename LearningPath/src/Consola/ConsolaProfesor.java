@@ -1,27 +1,48 @@
 package Consola;
 
+import java.io.IOException;
+//import java.io.FileNotFoundException;
+//import java.io.IOException;
+//import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
 import LearningPath.Actividad;
 import LearningPath.LearningPath;
+import Persistencia.CentralPersistenciaActividades;
+import Persistencia.CentralPersistenciaLearningPath;
+import Persistencia.CentralPersistenciaReseñas;
+//import Persistencia.CentralPersistenciaLearningPaths;
 import Usuario.Profesor;
 
 
-public class ConsolaProfesor {
+public class ConsolaProfesor{
 	
-
+	/**
+	 * 
+	 */
+	private static List<LearningPath> learningPathsCreados= new ArrayList<>();
     private Scanner entrada;
+    private CentralPersistenciaLearningPath cpl;
+    private CentralPersistenciaActividades cpa;
+    
+
     
     public ConsolaProfesor() {
         
         entrada = new Scanner(System.in);
+        cpl = new CentralPersistenciaLearningPath();
+        cpa = new CentralPersistenciaActividades();
+
     }
     
-    public void mostrarMenu() {
+    public void mostrarMenu() throws ClassNotFoundException, IOException { 
 		
+    	cpl.cargarLearningPaths();
+    	
         int opcion;
         
         do {
@@ -31,7 +52,8 @@ public class ConsolaProfesor {
             System.out.println("3. Calificar actividad");//bien
             System.out.println("4. Dejar reseña");//bien
             System.out.println("5. Ver Learning Path");//bien
-            System.out.println("6. Volver");//bien
+            System.out.println("6. Menú Actividades");//bien
+            System.out.println("7. Cerrar Sesión");//bien
             System.out.print("Elija una opción: ");
             opcion = entrada.nextInt();
             entrada.nextLine();
@@ -56,7 +78,10 @@ public class ConsolaProfesor {
                 System.out.print("Duración total en minutos: ");
                 int duracionMinutos = Integer.parseInt(entrada.nextLine());
             	
-                Profesor.crearLearningPath(titulo, descripcion, objetivos, dificultad, duracionMinutos);
+                LearningPath lp23 = Profesor.crearLearningPath(titulo, descripcion, objetivos, dificultad, duracionMinutos);
+                learningPathsCreados.add(lp23);
+                cpl.guardarLearningPaths(lp23);
+                
                 break;
                 
                 
@@ -67,7 +92,7 @@ public class ConsolaProfesor {
             	
             	System.out.println("Ingrese el nombre del Learning Path a modificar");
             	String nombre = entrada.nextLine();
-            	List<LearningPath> lp_Lista = Profesor.getLearningPathsCreados();
+            	List<LearningPath> lp_Lista = ConsolaProfesor.getLearningPathsCreados();
             	LearningPath lp = Profesor.getLearningPath(lp_Lista, nombre);
             	
             	System.out.println("Detalles actuales del Learning Path:");
@@ -97,19 +122,21 @@ public class ConsolaProfesor {
         	    System.out.print("Nueva duración total en minutos (poner 0 para no cambiar): ");
         	    int duracionInput = entrada.nextInt();
         	    
-        	    
+        	    String tituloAnterior = lp.getTitulo();
         	    
         	    double rating = lp.getRating();
         	    
         	    
-        	    Date fechaCreacion = lp.getFechaCreacion();
+        	    LocalDateTime fechaCreacion = lp.getFechaCreacion();
         	    LocalDateTime fechaModificacion = lp.getFechaModificacion();
         	    int version = lp.getVersion();
         	    List<Actividad> listaActividades = lp.getActividades();
 
         	    System.out.println("Learning Path editado exitosamente.");
             	
-                Profesor.editarLearningPath(lp, nuevoTitulo, nuevaDescripcion, nuevaDificultad, duracionInput, rating, fechaCreacion, fechaModificacion, version, listaActividades);
+                Profesor.editarLearningPath(lp, nuevoTitulo, nuevaDescripcion, nuevaDificultad, duracionInput, rating, fechaCreacion, fechaModificacion, version, listaActividades, tituloAnterior);
+                
+                
                 break;
                 
                 
@@ -142,6 +169,7 @@ public class ConsolaProfesor {
             	
             	System.out.println("Ingrese el nombre del Learning Path a reseñar");
             	String nombreLp = entrada.nextLine();
+            	
 
         	    System.out.print("Ingrese un rating (1-5): ");
         	    double calificacion = entrada.nextDouble();
@@ -158,27 +186,62 @@ public class ConsolaProfesor {
                 Profesor.añadirReseña(nombreLp, calificacion, feedback);
                 System.out.println("Reseña dejada exitosamente.");
                 
+                
                 break;
                 
             case 5:
             	//Ver learning path
+            	
+            	
             	System.out.println("Ingrese el nombre del Learning Path:");
             	String nombre11 = entrada.nextLine();
-            	List<LearningPath> lp_Lista11 = Profesor.getLearningPathsCreados();
+            	
+            	cpa.cargarActividades(nombre11);
+            	
+            	CentralPersistenciaReseñas.cargarResenas(nombre11);
+            	
+            	List<LearningPath> lp_Lista11 = ConsolaProfesor.getLearningPathsCreados();
             	LearningPath lp11 = Profesor.getLearningPath(lp_Lista11, nombre11);
+            	
+            	List<Actividad> lista_Actividades = lp11.getActividades();
+            	ArrayList<String> nombres = new ArrayList<>();
+            	
+            	for (Actividad i: lista_Actividades) {
+            		
+            		String texto = i.getTitulo();
+            		nombres.add(texto);
+            	}
+            	
             	System.out.println("Detalles actuales del Learning Path:");
         	    System.out.println("Título: " + lp11.getTitulo());
         	    System.out.println("Descripción: " + lp11.getDescripcion());
         	    System.out.println("Dificultad: " + lp11.getDificultad());
         	    System.out.println("Duración total en minutos: " + lp11.getDuracionTotalMinutos());
+        	    System.out.println("Actividades: " + nombres);
         	    System.out.println("Fecha creacion: " + lp11.getFechaCreacion());
         	    System.out.println("Fecha de modificacion " + lp11.getFechaModificacion());
-        	    System.out.println("Rating: " + lp11.getRating());
+        	    
+        	    System.out.println("Rating: " + lp11.actualizarRating());
+        	   
         	    System.out.println("Versión: " + lp11.getVersion());
-        	    System.out.println("Reseñas: " + lp11.getReseñas());
+        	    System.out.println("Reseñas: " + lp11.getFeedbacks(lp11));
+        	    
+        	    break;
             	
-            	
+            
             case 6:
+            	System.out.println("Ingrese el nombre del Learning Path para entrar a su menú de actividades:");
+            	String nombre12 = entrada.nextLine();
+            	
+            	cpa.cargarActividades(nombre12);
+            	
+            	List<LearningPath> lp_Lista111 = ConsolaProfesor.getLearningPathsCreados();
+            	LearningPath lp12 = Profesor.getLearningPath(lp_Lista111, nombre12);
+            	ConsolaActividad cActividad = new ConsolaActividad();
+            	cActividad.mostrarMenu(lp12);
+            	break;
+            	
+            case 7:
                 System.out.println("Cerrar sesión.");
                 break;
             default:
@@ -186,7 +249,15 @@ public class ConsolaProfesor {
 
             }
             
-        }while (opcion != 6);
+        }while (opcion != 7);
+	}
+
+	public static List<LearningPath> getLearningPathsCreados() {
+		return learningPathsCreados;
+	}
+
+	public static void setLearningPathsCreados(List<LearningPath> learningPathsCreados) {
+		ConsolaProfesor.learningPathsCreados = learningPathsCreados;
 	}
 }
     

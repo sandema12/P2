@@ -1,5 +1,6 @@
 package LearningPath;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
 public class RecursoEducativo extends Actividad {

@@ -14,8 +14,13 @@ import LearningPath.Tarea;
 import LearningPath.Quiz;
 import LearningPath.Examen;
 
-public class Actividad {
+public class Actividad implements Serializable {
    
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3077444340536470283L;
 	private String titulo;
     private String descripcion;
     private String objetivo;
@@ -24,7 +29,7 @@ public class Actividad {
     private int duracionMinutos;
     private boolean obligatoria;
     private LocalDate fechaLimite;
-    private static String resultado;
+    private String resultado;
 
 
     public Actividad(String titulo, String descripcion, String objetivo, String dificultad, String tipo,  boolean obligatoria, int duracionMinutos, LocalDate fechaLimite) {
@@ -41,7 +46,7 @@ public class Actividad {
     }
 
 
-    public static void completarActividad(Actividad actividad) {
+    public void completarActividad(Actividad actividad) {
 		
 		if (actividad.getTipo().equalsIgnoreCase("Recurso Educativo")) {
 			RecursoEducativo.completarRecurso();
@@ -61,6 +66,7 @@ public class Actividad {
 			respuestas = consolaRespQuiz.getRespuestas();
 			Quiz.entregarQuiz(respuestas);
 		}
+		
 		else if (actividad.getTipo().equalsIgnoreCase("Examen")) {
 			List<String> respuestas = new ArrayList<>();
 			ConsolaRespuestaExamen consolaRespExamen = new ConsolaRespuestaExamen();

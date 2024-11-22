@@ -1,12 +1,13 @@
 package LearningPath;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 import Usuario.Estudiante;
 
-public class Encuesta extends Actividad {
+public class Encuesta extends Actividad  {
 
     public Encuesta(String titulo, String descripcion, String objetivo, String dificultad, String tipo,
 			boolean obligatoria, int duracionMinutos, LocalDate fechaLimite) {

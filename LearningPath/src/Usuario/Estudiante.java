@@ -1,5 +1,6 @@
 package Usuario;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -8,7 +9,9 @@ import Consola.ConsolaAutenticacion;
 import LearningPath.Actividad;
 import LearningPath.LearningPath;
 
-public class Estudiante extends Usuario {
+public class Estudiante extends Usuario implements Serializable{
+	
+	private static final long serialVersionUID = -5625518367852705850L;
 
     private static List<LearningPath> learningPathsInscritos = new ArrayList<>();
     static List<String> calificaciones = new ArrayList<>();
@@ -35,9 +38,10 @@ public class Estudiante extends Usuario {
     public List<String> verCalificaciones(String nombre) {
     	List<Estudiante> estudiantes = ConsolaAutenticacion.getEstudiantes();
     	for (Estudiante est: estudiantes) {
-    		if (nombre.equals(est.getUsername()));
+    		if (nombre.equals(est.getUsername())) {
     			List<String> notas = est.getCalificaciones();
     			return notas;
+    	}
     	}
 		return null;
     	

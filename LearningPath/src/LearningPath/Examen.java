@@ -1,12 +1,13 @@
 package LearningPath;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 import Usuario.Estudiante;
 
-public class Examen extends Actividad {
+public class Examen extends Actividad  {
     private static List<Pregunta> preguntas;
     private static String estado; 
     

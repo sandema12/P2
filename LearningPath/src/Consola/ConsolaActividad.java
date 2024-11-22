@@ -1,22 +1,36 @@
 package Consola;
 
+import java.io.IOException;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import LearningPath.Actividad;
-import LearningPath.LearningPath; 
+import LearningPath.LearningPath;
+import Persistencia.CentralPersistenciaActividades;
+import Persistencia.CentralPersistenciaLearningPath;
+import Usuario.Profesor; 
 
-public class ConsolaActividad {
-    private Scanner entrada;
-
+public class ConsolaActividad implements Serializable{
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -2023901694741553570L;
+	private Scanner entrada;
+	private List<Actividad> actividades = new ArrayList<>();
+	private CentralPersistenciaActividades cpa;
+	
+	
     public ConsolaActividad() {
         entrada = new Scanner(System.in);
+        cpa = new CentralPersistenciaActividades();
+        
     }
 
-    public List<Actividad> mostrarMenu() {
-        List<Actividad> actividades = new ArrayList<>();
+    public List<Actividad> mostrarMenu(LearningPath lp2) throws ClassNotFoundException, IOException {
+        
         int opcion;
 
         do {
@@ -29,6 +43,11 @@ public class ConsolaActividad {
 
             switch (opcion) {
                 case 1:
+//                	System.out.print("Ingrese el nombre del Learning Path donde quiere agregar la actividad: ");
+//                    String nombreLp = entrada.nextLine();
+                    
+//                    ArrayList<LearningPath> lista_LP = (ArrayList<LearningPath>) ConsolaProfesor.getLearningPathsCreados();
+//                    LearningPath lp = Profesor.getLearningPath(lista_LP, nombreLp);
                 	
                 	System.out.print("Ingrese el titulo de la actividad: ");
                     String titulo = entrada.nextLine();
@@ -56,12 +75,13 @@ public class ConsolaActividad {
                     LocalDate fechaLimite = LocalDate.parse(fechaLimiteStr, DateTimeFormatter.ISO_LOCAL_DATE);
 
                 	
-                	
-                    LearningPath.agregarActividad(titulo, descripcion, objetivo, dificultad, tipo,  obligatoria, duracionMinutos, fechaLimite);
+                    Actividad act = lp2.agregarActividad(titulo, descripcion, objetivo, dificultad, tipo,  obligatoria, duracionMinutos, fechaLimite);
+                    cpa.guardarActividades(lp2, act);
                     
                     break;
                 case 2:
-                    verActividades(actividades);
+                	
+                    verActividades(lp2);
                     break;
                 case 3:
                     System.out.println("Fin.");
@@ -73,13 +93,19 @@ public class ConsolaActividad {
 
         return actividades; 
     }
+    
+    
+    
+    
 
 
 
-    private void verActividades(List<Actividad> actividades) {
+    private void verActividades(LearningPath lp) {
     	
-    	List<Actividad> actividadesExistentes = LearningPath.getActividades();
+    	
+    	List<Actividad> actividadesExistentes = lp.getActividades();
     	for (Actividad act : actividadesExistentes) {
+    		System.out.println("-------------------------------");
     		System.out.println("Titulo:" + act.getTitulo());
     		System.out.println("Tipo:" + act.getTipo());
     		System.out.println("Descripcion:" + act.getDescripcion());
@@ -87,6 +113,7 @@ public class ConsolaActividad {
     		System.out.println("Dificultad:" + act.getDificultad());
     		System.out.println("Duracion:" + act.getDuracionMinutos());
     		System.out.println("Fecha limite:" + act.getFechaLimite());
+    		System.out.println("-------------------------------");
     		
     	}
     }

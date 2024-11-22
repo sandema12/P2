@@ -1,8 +1,8 @@
 package LearningPath;
 
+import java.io.Serializable;
 
-
-public class PreguntaAbierta {
+public class PreguntaAbierta implements Serializable{
 
     private String enunciado; 
 
