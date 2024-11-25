@@ -2,6 +2,7 @@ package VentanasProfesor;
 
 import LearningPath.Actividad;
 import LearningPath.LearningPath;
+import Persistencia.CentralPersistenciaActividades;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,19 +12,24 @@ import java.io.IOException;
 import java.util.List;
 
 public class VentanaVerActividades extends JFrame {
+	
+	CentralPersistenciaActividades cpa;
 
-    public VentanaVerActividades(LearningPath learningPath) {
+    public VentanaVerActividades(LearningPath learningPath) throws ClassNotFoundException, IOException {
+    	
+    	 cpa = new CentralPersistenciaActividades();
         setTitle("Ver Actividades");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setSize(600, 400);
+        setSize(600, 500);
         setLayout(new BorderLayout());
 
         JTextArea areaActividades = new JTextArea();
         areaActividades.setEditable(false);
         JScrollPane scrollPane = new JScrollPane(areaActividades);
         scrollPane.setBorder(BorderFactory.createTitledBorder("Lista de Actividades"));
-
+        cpa.cargarActividades(learningPath.getTitulo());
         List<Actividad> actividades = learningPath.getActividades();
+        
         if (actividades.isEmpty()) {
             areaActividades.setText("No hay actividades registradas para este Learning Path.");
         } else {
@@ -53,10 +59,12 @@ public class VentanaVerActividades extends JFrame {
         botonVolver.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new VentanaActividades(VentanaCrearLP.getLearningPathsCreados());
-                dispose();
+                
+				new VentanaActividades(VentanaCrearLP.getLearningPathsCreados());
+				dispose();
             }
         });
+
 
         setLocationRelativeTo(null);
         setVisible(true);

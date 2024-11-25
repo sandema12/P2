@@ -22,17 +22,15 @@ public class testExamen {
     private List<String> respuestasCorrectas;
 
     @BeforeEach
-    void setUp() {
+    void setUp() throws Exception {
         pregunta1 = new Pregunta("¿Cuál es la capital de Colombia?", Arrays.asList("Cali", "Barranquilla", "Bogotá", "Medellín"), "3");
         pregunta2 = new Pregunta("¿Cuál es la capital de Alemania?", Arrays.asList("Berlín", "París", "Madrid","Roma"), "1");
         
         List<Pregunta> preguntas = Arrays.asList(pregunta1, pregunta2);
 
-        // Respuestas correctas para las preguntas
         respuestasCorrectas = Arrays.asList("3", "1");
-
-        // Crear un examen con las preguntas
-        examen = new Examen("Examen de Prueba", "Un examen sencillo para pruebas", "Evaluar conocimientos básicos", "Media", "Examen",
+    
+        examen = new Examen("Examen", "Examen fácil", "Evaluar conocimientos", "Media", "Examen",
                 preguntas, true, 30, LocalDate.now());
     }
 

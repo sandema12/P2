@@ -42,7 +42,7 @@ public class Examen extends Actividad  {
 	            if (pregunta.verificarRespuesta(respuestasExamen.get(i))) {
 	            	correctas++;                
 	            }
-	            puntajeObtenido = Math.round((correctas*5)/preguntas.size());
+	            puntajeObtenido = (float) ((correctas*5)/(double)preguntas.size());
 	        }
 	        estado = "Calificado";
 	        setResultado("Nota obtenida: " + puntajeObtenido);

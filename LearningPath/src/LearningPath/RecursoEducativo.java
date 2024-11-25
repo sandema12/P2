@@ -32,6 +32,8 @@ public class RecursoEducativo extends Actividad {
         return estado;
     }
 	
-	
+	public String getTipo() {
+        return tipo;
+    }
 
 }

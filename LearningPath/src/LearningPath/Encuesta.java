@@ -37,7 +37,4 @@ public class Encuesta extends Actividad  {
         return preguntas;
     }
 
-    public void setPreguntas(List<PreguntaAbierta> preguntas) {
-        this.preguntas = preguntas;
-    }
 }

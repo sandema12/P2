@@ -17,6 +17,8 @@ import LearningPath.Actividad;
 import LearningPath.Examen;
 import LearningPath.LearningPath;
 import LearningPath.Pregunta;
+import LearningPath.Quiz;
+import LearningPath.Tarea;
 import Persistencia.CentralPersistenciaLearningPath;
 import Persistencia.CentralPersistenciaReseñas;
 import Persistencia.centralPersistenciaUsuarios;
@@ -102,11 +104,11 @@ public class Profesor extends Usuario implements Serializable {
 		
 	}
 	
-	public static void calificarActividad(String nombreEst, String nombreLp, String nombreAct, String calificacion) {
+public static void calificarActividad(String nombreEst, String nombreLp, String nombreAct, String calificacion) {
 		
 		List<Estudiante> estudiantes = ConsolaAutenticacion.getEstudiantes();
 		
-		float resultado = 0;
+		String resultado = "";
 		
 		for (Estudiante est: estudiantes) {
 			if (est.getUsername().equals(nombreEst)){
@@ -118,20 +120,26 @@ public class Profesor extends Usuario implements Serializable {
 						
 						for (Actividad act: actividades) {
 							if (act.getTitulo().equals(nombreAct)){
+								if (act.getTipo().equalsIgnoreCase("Tarea")) {
+									if (act instanceof Tarea) {
+										Tarea tarea = (Tarea) act;  
+							            resultado = tarea.calificarTarea(calificacion);
+									}
+								}
 								if (act.getTipo().equalsIgnoreCase("Examen")) {
 									if (act instanceof Examen) {
 							            Examen examen = (Examen) act;  
-							            resultado = examen.calificarExamen();
+							            resultado = String.valueOf(examen.calificarExamen());
 									}
 								}
 								if (act.getTipo().equalsIgnoreCase("Quiz")) {
-									if (act instanceof Examen) {
-							            Examen examen = (Examen) act;  
-							            resultado = examen.calificarExamen();
+									if (act instanceof Quiz) {
+							            Quiz quiz = (Quiz) act;  
+							            resultado = String.valueOf(quiz.calificarQuiz());
 									}
 								}
-								act.setResultado(String.valueOf(resultado));
-								String texto = nombreAct + ":" + String.valueOf(resultado);
+								act.setResultado(resultado);
+								String texto = nombreAct + ":" + resultado;
 								est.calificaciones.add(texto);								
 							}						
 						}	
@@ -140,6 +148,10 @@ public class Profesor extends Usuario implements Serializable {
 			}	
 		}
 	}	
+
+	public static void seguimientoEstudiante(Estudiante est) {
+		est.verProgreso();
+	}
 	
 	public static void añadirReseña(String nombre, double calificacion, String feedback) throws ClassNotFoundException, IOException {
 		

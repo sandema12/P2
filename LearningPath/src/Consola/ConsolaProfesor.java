@@ -16,6 +16,7 @@ import Persistencia.CentralPersistenciaActividades;
 import Persistencia.CentralPersistenciaLearningPath;
 import Persistencia.CentralPersistenciaQuiz;
 import Persistencia.CentralPersistenciaReseñas;
+import Usuario.Estudiante;
 //import Persistencia.CentralPersistenciaLearningPaths;
 import Usuario.Profesor;
 
@@ -55,7 +56,8 @@ public class ConsolaProfesor{
             System.out.println("4. Dejar reseña");//bien
             System.out.println("5. Ver Learning Path");//bien
             System.out.println("6. Menú Actividades");//bien
-            System.out.println("7. Cerrar Sesión");//bien
+            System.out.println("7. Ver Calificaciones de un Estudiante");//bien
+            System.out.println("8. Cerrar Sesión");//bien
             System.out.print("Elija una opción: ");
             opcion = entrada.nextInt();
             entrada.nextLine();
@@ -192,24 +194,19 @@ public class ConsolaProfesor{
                 
                 break;
                 
-            case 5:
-            	//Ver learning path
-            	
-            	
+            //Ver learning path
+            case 5:           	
+            	            	
             	System.out.println("Ingrese el nombre del Learning Path:");
             	String nombre11 = entrada.nextLine();
             	
             	cpa.cargarActividades(nombre11);
             	
-            	
-            	
-            	
             	CentralPersistenciaReseñas.cargarResenas(nombre11);
             	
             	List<LearningPath> lp_Lista11 = ConsolaProfesor.getLearningPathsCreados();
             	LearningPath lp11 = Profesor.getLearningPath(lp_Lista11, nombre11);
-            	
-            	
+            	            	
             	List<Actividad> lista_Actividades = lp11.getActividades();
             	ArrayList<String> nombres = new ArrayList<>();
             	
@@ -239,7 +236,8 @@ public class ConsolaProfesor{
         	    break;
             	
             
-            case 6://Menu actividades
+        	//Menu actividades
+            case 6:
             	
             	System.out.println("Ingrese el nombre del Learning Path para entrar a su menú de actividades:");
             	String nombre12 = entrada.nextLine();
@@ -252,16 +250,35 @@ public class ConsolaProfesor{
             	cActividad.mostrarMenu(lp12);
             	break;
             	
+            	//Ver calificaciones
             case 7:
+            	List<String> notas = new ArrayList<>();
+            	
+            	System.out.print("Ingrese el nombre del estudiante para revisar calificaciones: ");
+            	String nombreEstudianteCalificar = entrada.nextLine(); 
+            	
+            	List<Estudiante> estudiantes = ConsolaAutenticacion.getEstudiantes();
+            	for (Estudiante est: estudiantes) {
+            		if (nombreEstudianteCalificar.equals(est.getUsername()));
+            			notas = est.getCalificaciones();
+            			
+            	}
+            	
+                System.out.println(notas);
+            	break;
+            	
+            	
+            case 8:
             	System.out.println("Sesion cerrada");
                 System.out.println("------------------------------");
                 break;
+                
             default:
                 System.out.println("La opción no es válida");
 
             }
             
-        }while (opcion != 7);
+        }while (opcion != 8);
 	}
 
 	public static List<LearningPath> getLearningPathsCreados() {

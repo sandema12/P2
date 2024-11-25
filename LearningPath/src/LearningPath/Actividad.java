@@ -8,7 +8,6 @@ import java.util.List;
 
 import Consola.ConsolaRespuestaExamen;
 import Consola.ConsolaRespuestaQuiz;
-import Usuario.Reseña;
 
 public class Actividad implements Serializable {
    
@@ -39,7 +38,6 @@ public class Actividad implements Serializable {
         this.duracionMinutos = duracionMinutos;
         this.obligatoria = obligatoria;
         this.fechaLimite = fechaLimite;
-        this.resultado = resultado; 
         
     }
 
@@ -185,13 +183,14 @@ public class Actividad implements Serializable {
 	public List<Pregunta> getPreguntas() {
 		return preguntas;
 	}
-
-
-	public void setPreguntas(List<Pregunta> preguntas) {
+	
+	
+    public void setPreguntas(List<Pregunta> preguntas) {
 		this.preguntas = preguntas;
 	}
-	
-    public ArrayList<String> getEnunciados(Actividad actividad) {
+
+
+	public ArrayList<String> getEnunciados(Actividad actividad) {
     	
     	ArrayList<Pregunta> preguntas = (ArrayList<Pregunta>) actividad.getPreguntas();
     	ArrayList<String> enunciados = new ArrayList<>();

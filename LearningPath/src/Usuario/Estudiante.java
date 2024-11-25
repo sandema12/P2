@@ -32,6 +32,7 @@ public class Estudiante extends Usuario implements Serializable{
     }
 
     public void completarActividad(Actividad actividad) {
+    	actividad.completarActividad(actividad);
         System.out.println("Actividad completada: " + actividad.getDescripcion());
 
     }
@@ -50,7 +51,15 @@ public class Estudiante extends Usuario implements Serializable{
     public void verProgreso() {
         System.out.println("Progreso en los Learning Paths:");
         for (LearningPath lp : learningPathsInscritos) {
-            System.out.println(lp.getTitulo() + " - Progreso: " + "0% (sin implementar)");
+        	List<Actividad> actividades = lp.getActividades();
+        	int completadas = 0;
+        	for(Actividad act: actividades) {
+        		if(act.getResultado().equals("Completada")) {
+        			completadas++;
+        		}
+        	}
+        	float progreso = (float) ((completadas*100)/(double)actividades.size());
+            System.out.println(lp.getTitulo() + " - Progreso: " + String.valueOf(progreso)+ "%");
         }
     }
 

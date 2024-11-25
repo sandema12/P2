@@ -14,10 +14,6 @@ public class Tarea extends Actividad {
 		this.estado = "Pendiente";
 	}
 
-	
-
-
-
     public void entregarTarea() {
         if (estado.equals("Pendiente")) {
             estado = "Entregada";
@@ -27,14 +23,15 @@ public class Tarea extends Actividad {
         }
     }
 
-    public void calificarTarea(String resultado) {
+    public String calificarTarea(String resultado) {
         if (estado.equals("Entregada")) {
-            estado = "Calificada";
+            estado = "Calificado";
             setResultado(resultado);
-            System.out.println("La tarea ha sido calificada con: " + resultado);
+            System.out.println("La tarea ha sido calificada de forma: " + resultado);
         } else {
             System.out.println("No se puede calificar una tarea que no ha sido entregada.");
         }
+        return resultado;
     }
 
     public String getEstado() {

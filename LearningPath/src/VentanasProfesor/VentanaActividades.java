@@ -64,7 +64,15 @@ public class VentanaActividades extends JFrame {
                     botonVerActividades.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            cambiarVentana(new VentanaVerActividades(learningPath));
+                            try {
+								cambiarVentana(new VentanaVerActividades(learningPath));
+							} catch (ClassNotFoundException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							} catch (IOException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
                         }
                     });
 

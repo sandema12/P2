@@ -64,28 +64,4 @@ class testActividad {
         recurso.completarRecurso();
         assertEquals("Completado", recurso.getEstado(), "El recurso educativo no se completó con éxito");
     }
-
-    /*@Test
-    void testCalificarTarea() {
-        tarea.entregarTarea();
-        tarea.calificarTarea("Excelente");
-        assertEquals("Calificada", tarea.getEstado());
-        assertEquals("Excelente", tarea.getResultado());
-    }
-
-    @Test
-    void testAgregarPreguntaQuiz() {
-        Pregunta nuevaPregunta = new Pregunta("¿Cuál es la capital de Alemania?", 
-            Arrays.asList("Berlín", "Múnich", "Hamburgo"), "Berlín");
-        quiz.agregarPregunta(nuevaPregunta);
-        assertTrue(quiz.getPreguntas().contains(nuevaPregunta));
-    }
-
-    @Test
-    void testCalificarExamen() {
-        examen.entregarExamen(Arrays.asList("París", "4"));
-        examen.calificarExamen(null, Arrays.asList("París", "4")); // Suponiendo que Estudiante no afecta el resultado
-        assertEquals("Calificado", examen.getEstado());
-        assertEquals("Nota obtenida: 2.0", examen.getResultado()); // Si cada pregunta tiene 1 punto.
-    }*/
 }

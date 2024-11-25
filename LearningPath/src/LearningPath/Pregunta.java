@@ -21,24 +21,21 @@ public class Pregunta implements Serializable {
         
     }
 
-    
-    public boolean verificarRespuesta(String respuesta) {
-        return respuestaCorrecta.equalsIgnoreCase(respuesta);
-    }
-
-    
-    public List<String> getOpciones() {
-        return opciones;
-    }
-
-    
     public void mostrarPregunta() {
         System.out.println(enunciado);
         for (int i = 0; i < opciones.size(); i++) {
             System.out.println((i + 1) + ". " + opciones.get(i));
         }
     }
-
+    
+    
+    public boolean verificarRespuesta(String respuesta) {
+        return respuestaCorrecta.equalsIgnoreCase(respuesta);
+    }
+    
+    public List<String> getOpciones() {
+        return opciones;
+    }
     
     public String getEnunciado() {
         return enunciado;

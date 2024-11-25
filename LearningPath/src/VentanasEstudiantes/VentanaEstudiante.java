@@ -5,6 +5,8 @@ import java.awt.BorderLayout;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
+import InterfazGrafica.InterfazAutenticación;
+
 public class VentanaEstudiante extends JFrame {
 	
 	public VentanaEstudiante(String usuario) {
@@ -20,4 +22,24 @@ public class VentanaEstudiante extends JFrame {
         setLocationRelativeTo(null);
     }
 
+	public void cambiarVentana(JFrame nuevaVentana) {
+	    nuevaVentana.setVisible(true);
+	    this.dispose();
+	}
+
+	public void inscribirseEnLearningPath() {
+		// TODO Auto-generated method stub
+		
+		
+	}
+
+	public void verCalificaciones() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void verProgreso() {
+		// TODO Auto-generated method stub
+		
+	}
 }
