@@ -1,4 +1,5 @@
 # Proyecto: Gestión de Learning Paths
+SE DEBE CORRER EL PROGRAMA DESDE LA CLASE INTERFAZ AUTENTICACIÓN
 
 Este proyecto tiene como objetivo proporcionar una herramienta para gestionar **Learning Paths** y actividades asociadas. Incluye funcionalidades específicas para profesores y estudiantes, además de persistencia de datos para usuarios, Learning Paths, reseñas y actividades.
 
