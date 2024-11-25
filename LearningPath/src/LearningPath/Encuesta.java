@@ -9,9 +9,9 @@ import Usuario.Estudiante;
 
 public class Encuesta extends Actividad  {
 
-    public Encuesta(String titulo, String descripcion, String objetivo, String dificultad, String tipo,
+    public Encuesta(String titulo, String descripcion, String objetivo, String dificultad, String tipo, List<Pregunta> preguntas,
 			boolean obligatoria, int duracionMinutos, LocalDate fechaLimite) {
-		super(titulo, descripcion, objetivo, dificultad, tipo, obligatoria, duracionMinutos, fechaLimite);
+		super(titulo, descripcion, objetivo, dificultad, tipo, preguntas, obligatoria, duracionMinutos, fechaLimite);
 		this.preguntas = new ArrayList<>();
 	}
 
@@ -30,11 +30,10 @@ public class Encuesta extends Actividad  {
             PreguntaAbierta pregunta = preguntas.get(i);
             System.out.println("Respuesta a la pregunta \"" + pregunta.getEnunciado() + "\": " + respuestas.get(i));
         }
-        //completarActividad(estudiante);  
     }
 
 
-    public List<PreguntaAbierta> getPreguntas() {
+    public List getPreguntas() {
         return preguntas;
     }
 

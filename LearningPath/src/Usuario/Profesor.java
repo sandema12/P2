@@ -3,6 +3,7 @@ package Usuario;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
@@ -13,10 +14,13 @@ import Consola.ConsolaAutenticacion;
 import Consola.ConsolaEstudiante;
 import Consola.ConsolaProfesor;
 import LearningPath.Actividad;
+import LearningPath.Examen;
 import LearningPath.LearningPath;
+import LearningPath.Pregunta;
 import Persistencia.CentralPersistenciaLearningPath;
 import Persistencia.CentralPersistenciaReseñas;
 import Persistencia.centralPersistenciaUsuarios;
+import VentanasProfesor.VentanaCrearLP;
 
 public class Profesor extends Usuario implements Serializable {
 	private static final long serialVersionUID = 1563643892269891790L;
@@ -44,6 +48,19 @@ public class Profesor extends Usuario implements Serializable {
         List<Actividad> actividades = new ArrayList<>();
         List<Reseña> reseñas = new ArrayList<>();
         LearningPath nuevoLearningPath = new LearningPath(titulo, descripcion, objetivo, dificultad, duracionMinutos, rating, fechaCreacion, fechaModificacion, version, actividades, reseñas);
+        for (Actividad act: actividades) {
+        	String tituloAct = act.getTitulo();
+        	String descripcionAct = act.getDescripcion();
+        	String objetivoAct = act.getObjetivo();
+        	String dificultadAct = act.getDificultad();
+        	String tipoAct = act.getTipo();
+        	List<Pregunta> preguntas = act.getPreguntas();
+        	boolean obligatoria = act.isObligatoria();
+        	int duracionMinutosAct = act.getDuracionMinutos();
+        	LocalDate fechaLimite = act.getFechaLimite();
+        	nuevoLearningPath.agregarActividad(tituloAct, descripcionAct, objetivoAct, dificultadAct, tipoAct, preguntas, obligatoria, duracionMinutosAct,fechaLimite);
+        }
+        
         learningPathsCreados.add(nuevoLearningPath);
         
 		return nuevoLearningPath;
@@ -64,8 +81,7 @@ public class Profesor extends Usuario implements Serializable {
 	        lp.setDificultad(dificultad);
 	    }
 		
-		if (!(duracionTotalMinutos == 0)) {
-			
+		if (!(duracionTotalMinutos == 0)) {			
 			lp.setDuracionTotalMinutos(duracionTotalMinutos);
 			
 		}
@@ -89,12 +105,12 @@ public class Profesor extends Usuario implements Serializable {
 	public static void calificarActividad(String nombreEst, String nombreLp, String nombreAct, String calificacion) {
 		
 		List<Estudiante> estudiantes = ConsolaAutenticacion.getEstudiantes();
-		String texto = nombreAct + "" + calificacion;
+		
+		float resultado = 0;
 		
 		for (Estudiante est: estudiantes) {
 			if (est.getUsername().equals(nombreEst)){
-				Estudiante estudiante = est;
-				List<LearningPath> lps = estudiante.getLearningPathsInscritos();
+				List<LearningPath> lps = est.getLearningPathsInscritos();
 				
 				for (LearningPath lp: lps) {
 					if (lp.getTitulo().equals(nombreLp)){
@@ -102,32 +118,33 @@ public class Profesor extends Usuario implements Serializable {
 						
 						for (Actividad act: actividades) {
 							if (act.getTitulo().equals(nombreAct)){
-								act.setResultado(calificacion);
-								est.calificaciones.add(texto);
-								
-							}
-						
-						
+								if (act.getTipo().equalsIgnoreCase("Examen")) {
+									if (act instanceof Examen) {
+							            Examen examen = (Examen) act;  
+							            resultado = examen.calificarExamen();
+									}
+								}
+								if (act.getTipo().equalsIgnoreCase("Quiz")) {
+									if (act instanceof Examen) {
+							            Examen examen = (Examen) act;  
+							            resultado = examen.calificarExamen();
+									}
+								}
+								act.setResultado(String.valueOf(resultado));
+								String texto = nombreAct + ":" + String.valueOf(resultado);
+								est.calificaciones.add(texto);								
+							}						
+						}	
 					}
-						
-						
-					}
-					
 				}
 			}	
 		}
-		
-		
-		
-		
-	    
-	    
 	}	
 	
 	public static void añadirReseña(String nombre, double calificacion, String feedback) throws ClassNotFoundException, IOException {
 		
 		Reseña reseña = new Reseña(nombre, calificacion, feedback);
-		List<LearningPath> lista = ConsolaProfesor.getLearningPathsCreados();
+		List<LearningPath> lista = VentanaCrearLP.getLearningPathsCreados();
 		LearningPath lp = Profesor.getLearningPath(lista, nombre);
         
 		
@@ -150,18 +167,14 @@ public class Profesor extends Usuario implements Serializable {
     }
 	
 	public static ArrayList<String> getNombresLearningPathsCreados(ArrayList<LearningPath> lps) {
-		
-    
+		 
     	ArrayList<String> nombres = new ArrayList<>();
     	
     	for (LearningPath i: lps) {
     		String texto = i.getTitulo();
     		nombres.add(texto);
-    	}
-    	
+    	}    	
 		return nombres;
-		
-        
     }
 	
 	
@@ -169,10 +182,7 @@ public class Profesor extends Usuario implements Serializable {
     public static LearningPath getLearningPath(List<LearningPath> lp_lista, String nombre){
     	for (LearningPath lp : lp_lista) {
             if (lp.getTitulo().equals(nombre)) {
-                return lp;
-                
-                
-              
+                return lp;                  
             }
         }
 		return null;

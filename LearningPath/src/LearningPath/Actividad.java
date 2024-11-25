@@ -8,11 +8,7 @@ import java.util.List;
 
 import Consola.ConsolaRespuestaExamen;
 import Consola.ConsolaRespuestaQuiz;
-import Usuario.Estudiante;
-import LearningPath.RecursoEducativo;
-import LearningPath.Tarea;
-import LearningPath.Quiz;
-import LearningPath.Examen;
+import Usuario.Reseña;
 
 public class Actividad implements Serializable {
    
@@ -26,18 +22,20 @@ public class Actividad implements Serializable {
     private String objetivo;
     private String dificultad;
     private String tipo;
+    private List<Pregunta> preguntas;
     private int duracionMinutos;
     private boolean obligatoria;
     private LocalDate fechaLimite;
     private String resultado;
 
 
-    public Actividad(String titulo, String descripcion, String objetivo, String dificultad, String tipo,  boolean obligatoria, int duracionMinutos, LocalDate fechaLimite) {
+    public Actividad(String titulo, String descripcion, String objetivo, String dificultad, String tipo, List<Pregunta> preguntas,  boolean obligatoria, int duracionMinutos, LocalDate fechaLimite) {
         this.titulo = titulo;
     	this.descripcion = descripcion;
         this.objetivo = objetivo;
         this.dificultad = dificultad;
         this.tipo = tipo;
+        this.preguntas = preguntas;
         this.duracionMinutos = duracionMinutos;
         this.obligatoria = obligatoria;
         this.fechaLimite = fechaLimite;
@@ -47,40 +45,62 @@ public class Actividad implements Serializable {
 
 
     public void completarActividad(Actividad actividad) {
+		System.out.println("Tipo de actividad: "+ actividad.getTipo());
 		
 		if (actividad.getTipo().equalsIgnoreCase("Recurso Educativo")) {
-			RecursoEducativo.completarRecurso();
+			if (actividad instanceof RecursoEducativo) {
+				RecursoEducativo recursoEducativo = (RecursoEducativo) actividad;
+				recursoEducativo.completarRecurso();
+			}
     	}
 		else if (actividad.getTipo().equalsIgnoreCase("Tarea")) {
-			Tarea.entregarTarea();
+			if (actividad instanceof Tarea) {
+			    Tarea tarea = (Tarea) actividad;
+			    tarea.entregarTarea();
+			}
 		}
 		else if (actividad.getTipo().equalsIgnoreCase("Quiz")) {
-			ArrayList respuestas = new ArrayList<>();
+			List<String> respuestas = new ArrayList<>();
 			ConsolaRespuestaQuiz consolaRespQuiz = new ConsolaRespuestaQuiz();
 			System.out.println("Estas son las preguntas del quiz: ");
-			List<Pregunta> preguntas = Quiz.getPreguntas();
+			List<Pregunta> preguntas = actividad.getPreguntas();
 			for (Pregunta preg : preguntas) {
-				System.out.println(preg);
+				int x=1;
+				System.out.println("Pregunta #"+x+": " + preg.getEnunciado());
+				List<String> opciones = preg.getOpciones();
+				int i=1;
+				for(String opcion : opciones) {
+					System.out.println("Opcion "+i+": " + opcion);
+					i++;
+				}
+				x++;
 				consolaRespQuiz.mostrarMenu();
 			}
 			respuestas = consolaRespQuiz.getRespuestas();
-			Quiz.entregarQuiz(respuestas);
+			if (actividad instanceof Quiz) {
+	            Quiz quiz = (Quiz) actividad;  
+	            quiz.entregarQuiz(respuestas); 
+			}
+			
 		}
-		
 		else if (actividad.getTipo().equalsIgnoreCase("Examen")) {
 			List<String> respuestas = new ArrayList<>();
 			ConsolaRespuestaExamen consolaRespExamen = new ConsolaRespuestaExamen();
 			System.out.println("Estas son las preguntas del examen: ");
-			List<Pregunta> preguntas = Examen.getPreguntas();
+			List<Pregunta> preguntas = actividad.getPreguntas();
 			for (Pregunta preg : preguntas) {
-				System.out.println(preg);
+				System.out.println("Pregunta: " + preg.getEnunciado());
 				consolaRespExamen.mostrarMenu();
 			}
 			respuestas = consolaRespExamen.getRespuestas();
-			Examen.entregarExamen(respuestas);
+			if (actividad instanceof Examen) {
+	            Examen examen = (Examen) actividad;  
+	            examen.entregarExamen(respuestas); 
+			}
 			
 		}
         System.out.println("El estudiante ha completado la actividad");
+        System.out.println("------------------------------");
         resultado = "Completada";
     }
 
@@ -129,8 +149,6 @@ public class Actividad implements Serializable {
         this.obligatoria = obligatoria;
     }
 
-
-
     public LocalDate getFechaLimite() {
         return fechaLimite;
     }
@@ -152,21 +170,38 @@ public class Actividad implements Serializable {
 		return titulo;
 	}
 
-
-
 	public void setTitulo(String titulo) {
 		this.titulo = titulo;
 	}
-
-
 
 	public String getTipo() {
 		return tipo;
 	}
 
-
-
 	public void setTipo(String tipo) {
 		this.tipo = tipo;
 	}
+	
+	public List<Pregunta> getPreguntas() {
+		return preguntas;
+	}
+
+
+	public void setPreguntas(List<Pregunta> preguntas) {
+		this.preguntas = preguntas;
+	}
+	
+    public ArrayList<String> getEnunciados(Actividad actividad) {
+    	
+    	ArrayList<Pregunta> preguntas = (ArrayList<Pregunta>) actividad.getPreguntas();
+    	ArrayList<String> enunciados = new ArrayList<>();
+    	
+    	for (Pregunta i: preguntas) {
+    		String texto = i.getEnunciado();
+    		enunciados.add(texto);
+    	}
+    	
+		return enunciados;
+	}
+	
 }

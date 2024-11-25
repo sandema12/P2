@@ -10,6 +10,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 import Consola.ConsolaAutenticacion;
+import InterfazGrafica.InterfazAutenticación;
 import Usuario.Estudiante;
 import Usuario.Profesor;
 import Usuario.Usuario;
@@ -20,10 +21,10 @@ public class centralPersistenciaUsuarios implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = -1882595537808982257L;
-	private ConsolaAutenticacion usuarios_consola; 
+	private InterfazAutenticación interfaz;
 	
-	public centralPersistenciaUsuarios(ConsolaAutenticacion consola) {
-	    this.usuarios_consola = consola; 
+	public centralPersistenciaUsuarios(InterfazAutenticación interfaz1) {
+	    this.interfaz = interfaz1; 
 	}
 	
 	public void cargarUsuarios() throws FileNotFoundException, IOException, ClassNotFoundException {
@@ -31,17 +32,17 @@ public class centralPersistenciaUsuarios implements Serializable {
 
 	    try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("./data/usuarios.data"))) {
 	        usuarios = (ArrayList<Usuario>) ois.readObject(); 
-	        usuarios_consola.setUsuarios(usuarios);          
-	        System.out.println("Usuarios cargados exitosamente.");
+	        interfaz.setUsuarios(usuarios);          
+	        
 	    } catch (FileNotFoundException e) {
 	        
 	        usuarios = new ArrayList<>();
-	        usuarios_consola.setUsuarios(usuarios);
-	        System.out.println("El archivo no existe. Inicializando lista de usuarios vacía.");
+	        interfaz.setUsuarios(usuarios);
+	        
 	        
 	    }
 	    
-	    System.out.println("Usuarios: "+ Usuario.getUsernames(usuarios));
+	    
 	}
 
 	
@@ -61,7 +62,7 @@ public class centralPersistenciaUsuarios implements Serializable {
 	        oos.writeObject(usuarios);
 	    }
 
-	    System.out.println("Usuario añadido exitosamente.");
+	    
 	}
 	
 	
@@ -70,13 +71,13 @@ public class centralPersistenciaUsuarios implements Serializable {
 
 	    try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("./data/estudiantes.data"))) {
 	        estudiantes = (ArrayList<Estudiante>) ois.readObject(); 
-	        usuarios_consola.setEstudiantes(estudiantes);          
-	        System.out.println("Estudiantes cargados exitosamente.");
+	        interfaz.setEstudiantes(estudiantes);          
+	        
 	    } catch (FileNotFoundException e) {
 	        
 	        estudiantes = new ArrayList<>();
-	        usuarios_consola.setEstudiantes(estudiantes);
-	        System.out.println("El archivo no existe. Inicializando lista de usuarios vacía.");
+	        interfaz.setEstudiantes(estudiantes);
+	        
 	        
 	    }
 	}
@@ -98,7 +99,7 @@ public class centralPersistenciaUsuarios implements Serializable {
 	        oos.writeObject(estudiantes);
 	    }
 
-	    System.out.println("Estudiante añadido exitosamente.");
+	    
 	}
 	
 	public void cargarProfesores() throws FileNotFoundException, IOException, ClassNotFoundException {
@@ -106,13 +107,13 @@ public class centralPersistenciaUsuarios implements Serializable {
 
 	    try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("./data/profesores.data"))) {
 	        profesores = (ArrayList<Profesor>) ois.readObject(); 
-	        usuarios_consola.setProfesores(profesores);          
-	        System.out.println("Profesores cargados exitosamente.");
+	        interfaz.setProfesores(profesores);          
+	        
 	    } catch (FileNotFoundException e) {
 	        
 	        profesores = new ArrayList<>();
-	        usuarios_consola.setProfesores(profesores);
-	        System.out.println("El archivo no existe. Inicializando lista de usuarios vacía.");
+	        interfaz.setProfesores(profesores);
+	        
 	        
 	    }
 
@@ -135,7 +136,7 @@ public class centralPersistenciaUsuarios implements Serializable {
 	        oos.writeObject(profesores);
 	    }
 
-	    System.out.println("Profesor añadido exitosamente.");
+	    
 	}
 	
 

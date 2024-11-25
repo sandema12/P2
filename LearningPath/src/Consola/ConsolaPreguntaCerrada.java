@@ -70,7 +70,7 @@ public class ConsolaPreguntaCerrada {
        
         String respuestaCorrecta = opciones.get(opcionCorrecta - 1);
         double puntaje = 5; 
-        Pregunta nuevaPregunta = new Pregunta(enunciado, opciones, respuestaCorrecta, puntaje);
+        Pregunta nuevaPregunta = new Pregunta(enunciado, opciones, respuestaCorrecta);
 
         System.out.println("Pregunta cerrada agregada exitosamente.");
         return nuevaPregunta; 

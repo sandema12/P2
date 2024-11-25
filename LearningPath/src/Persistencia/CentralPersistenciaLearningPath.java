@@ -6,13 +6,14 @@ import java.util.ArrayList;
 import Consola.ConsolaProfesor;
 import LearningPath.LearningPath;
 import Usuario.Profesor;
+import VentanasProfesor.VentanaCrearLP;
 
 
 public class CentralPersistenciaLearningPath {
 
     private static final String FILE_NAME = "./data/learningPaths.data";
     
-    private ConsolaProfesor consolaProfesor;
+    private VentanaCrearLP consolaProfesor;
 
     public void guardarLearningPaths(LearningPath lp) throws IOException, ClassNotFoundException {
     	

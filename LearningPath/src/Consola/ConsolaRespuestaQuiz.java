@@ -7,28 +7,22 @@ import java.util.Scanner;
 public class ConsolaRespuestaQuiz {
 	
 	private Scanner entrada;
-	private ArrayList respuestas;
+	private List<String> respuestas;
 
     public ConsolaRespuestaQuiz() {
         entrada = new Scanner(System.in);
-        respuestas = new ArrayList<>();
+        this.respuestas = new ArrayList<>();
     }
     
-    public void mostrarMenu() {
-		
-        int opcion;
+    public void mostrarMenu() {        
         
-        
-            System.out.println("Ingrese su respuesta: ");
-            opcion = entrada.nextInt();
+            System.out.println("Ingrese su respuesta (1,2,3,4): ");
+            String opcion = entrada.nextLine();
             respuestas.add(opcion);
-            entrada.nextLine();
-            
-
-            
+                        
     }
 
-	public ArrayList getRespuestas() {
+	public List<String> getRespuestas() {
 		return respuestas;
 	}
     

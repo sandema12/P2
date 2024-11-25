@@ -2,20 +2,23 @@ package LearningPath;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.List;
 
 public class Tarea extends Actividad {
 
-    public Tarea(String titulo, String descripcion, String objetivo, String dificultad, String tipo,
+	private String estado; 
+
+    public Tarea(String titulo, String descripcion, String objetivo, String dificultad, String tipo, List<Pregunta> preguntas, 
 			boolean obligatoria, int duracionMinutos, LocalDate fechaLimite) {
-		super(titulo, descripcion, objetivo, dificultad, tipo, obligatoria, duracionMinutos, fechaLimite);
+		super(titulo, descripcion, objetivo, dificultad, tipo, preguntas, obligatoria, duracionMinutos, fechaLimite);
 		this.estado = "Pendiente";
 	}
 
-	private static String estado; 
+	
 
 
 
-    public static void entregarTarea() {
+    public void entregarTarea() {
         if (estado.equals("Pendiente")) {
             estado = "Entregada";
             System.out.println("La tarea ha sido entregada.");

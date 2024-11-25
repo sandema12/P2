@@ -14,6 +14,7 @@ import LearningPath.Actividad;
 import LearningPath.LearningPath;
 import Persistencia.CentralPersistenciaActividades;
 import Persistencia.CentralPersistenciaLearningPath;
+import Persistencia.CentralPersistenciaQuiz;
 import Persistencia.CentralPersistenciaReseñas;
 //import Persistencia.CentralPersistenciaLearningPaths;
 import Usuario.Profesor;
@@ -28,6 +29,7 @@ public class ConsolaProfesor{
     private Scanner entrada;
     private CentralPersistenciaLearningPath cpl;
     private CentralPersistenciaActividades cpa;
+    private CentralPersistenciaQuiz cpq;
     
 
     
@@ -135,7 +137,7 @@ public class ConsolaProfesor{
         	    System.out.println("Learning Path editado exitosamente.");
             	
                 Profesor.editarLearningPath(lp, nuevoTitulo, nuevaDescripcion, nuevaDificultad, duracionInput, rating, fechaCreacion, fechaModificacion, version, listaActividades, tituloAnterior);
-                
+                System.out.println("------------------------------");
                 
                 break;
                 
@@ -161,6 +163,7 @@ public class ConsolaProfesor{
         	    String resultado = entrada.nextLine();
             	
                 Profesor.calificarActividad(nombreEstudiante, nombreLearningPath, nombreActividad, resultado);
+                System.out.println("------------------------------");
                 break;
                 
                
@@ -185,7 +188,7 @@ public class ConsolaProfesor{
             	
                 Profesor.añadirReseña(nombreLp, calificacion, feedback);
                 System.out.println("Reseña dejada exitosamente.");
-                
+                System.out.println("------------------------------");
                 
                 break;
                 
@@ -198,18 +201,25 @@ public class ConsolaProfesor{
             	
             	cpa.cargarActividades(nombre11);
             	
+            	
+            	
+            	
             	CentralPersistenciaReseñas.cargarResenas(nombre11);
             	
             	List<LearningPath> lp_Lista11 = ConsolaProfesor.getLearningPathsCreados();
             	LearningPath lp11 = Profesor.getLearningPath(lp_Lista11, nombre11);
             	
+            	
             	List<Actividad> lista_Actividades = lp11.getActividades();
             	ArrayList<String> nombres = new ArrayList<>();
+            	
             	
             	for (Actividad i: lista_Actividades) {
             		
             		String texto = i.getTitulo();
             		nombres.add(texto);
+            		
+            		cpq.cargarQuiz(lp11, texto);
             	}
             	
             	System.out.println("Detalles actuales del Learning Path:");
@@ -229,7 +239,8 @@ public class ConsolaProfesor{
         	    break;
             	
             
-            case 6:
+            case 6://Menu actividades
+            	
             	System.out.println("Ingrese el nombre del Learning Path para entrar a su menú de actividades:");
             	String nombre12 = entrada.nextLine();
             	
@@ -242,7 +253,8 @@ public class ConsolaProfesor{
             	break;
             	
             case 7:
-                System.out.println("Cerrar sesión.");
+            	System.out.println("Sesion cerrada");
+                System.out.println("------------------------------");
                 break;
             default:
                 System.out.println("La opción no es válida");

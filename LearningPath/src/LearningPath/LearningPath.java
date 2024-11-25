@@ -18,6 +18,7 @@ public class LearningPath  implements Serializable{
 	private static final long serialVersionUID = 498287084730697217L;
 	private String titulo;
     private String descripcion;
+    private String objetivo;
     private String dificultad; 
     private int duracionTotalMinutos;
     public List<Reseña> reseñas = new ArrayList<>();
@@ -26,23 +27,52 @@ public class LearningPath  implements Serializable{
     private LocalDateTime fechaCreacion;
     private LocalDateTime fechaModificacion;
     private int version;
-    private List<Actividad> actividades = new ArrayList<>();
+    private List<Actividad> actividades;
 
    
-    public LearningPath(String titulo, String descripcion, String dificultad, String tipo, int duracionTotalMinutos, double rating, LocalDateTime fechaCreacion, LocalDateTime fechaModificacion,  int version, List<Actividad> actividades, List<Reseña> reseñas) {
+    public LearningPath(String titulo, String descripcion, String objetivo, String dificultad, int duracionTotalMinutos, double rating, LocalDateTime fechaCreacion, LocalDateTime fechaModificacion,  int version, List<Actividad> actividades, List<Reseña> reseñas) {
         this.titulo = titulo;
         this.descripcion = descripcion;
+        this.objetivo = objetivo;
         this.dificultad = dificultad;
         this.fechaCreacion = LocalDateTime.now();
         this.fechaModificacion = LocalDateTime.now();
         this.version = version;
         this.duracionTotalMinutos = duracionTotalMinutos;
         this.rating = rating;
+        this.actividades=new ArrayList<>();
         
     }
 
    
-    public Actividad agregarActividad(String titulo, String descripcion, String objetivo, String dificultad, String tipo,  boolean obligatoria, int duracionMinutos, LocalDate fechaLimite) {
+    public void agregarActividad(String titulo, String descripcion, String objetivo, String dificultad, String tipo, List<Pregunta> preguntas,  boolean obligatoria, int duracionMinutos, LocalDate fechaLimite) {
+        
+    	Actividad nuevaActividad;
+
+        switch (tipo.toLowerCase()) {
+            case "quiz":
+                nuevaActividad = new Quiz(titulo, descripcion, objetivo, dificultad, tipo, preguntas, obligatoria, duracionMinutos, fechaLimite);
+                break;
+            case "examen":
+                nuevaActividad = new Examen(titulo, descripcion, objetivo, dificultad, tipo, preguntas, obligatoria, duracionMinutos, fechaLimite);
+                break;
+            case "tarea":
+                nuevaActividad = new Tarea(titulo, descripcion, objetivo, dificultad, tipo, preguntas, obligatoria, duracionMinutos, fechaLimite);
+                break;
+            case "recurso educativo":
+                nuevaActividad = new RecursoEducativo(titulo, descripcion, objetivo, dificultad, tipo, preguntas, obligatoria, duracionMinutos, fechaLimite);
+                break;
+            default:
+                throw new IllegalArgumentException("Tipo de actividad no reconocido: " + tipo);
+        }
+
+        actividades.add(nuevaActividad);
+
+		
+        
+    }
+    
+    /*public Actividad agregarActividad(String titulo, String descripcion, String objetivo, String dificultad, String tipo,  boolean obligatoria, int duracionMinutos, LocalDate fechaLimite) {
         
     	Actividad nuevaActividad = new Actividad(titulo, descripcion, objetivo, dificultad, tipo,  obligatoria, duracionMinutos, fechaLimite);
         
@@ -51,7 +81,7 @@ public class LearningPath  implements Serializable{
 		return nuevaActividad;
 		
         
-    }
+    }*/
 	
     public List<Reseña> getReseñas() {
 		return reseñas;
@@ -95,7 +125,6 @@ public class LearningPath  implements Serializable{
 		this.reseñas = reseñas;
 	}
 
-
 	public String getTitulo() {
         return titulo;
     }
@@ -111,6 +140,10 @@ public class LearningPath  implements Serializable{
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
+    
+    public String getObjetivos() {
+        return objetivo;
+    }
 
     public String getDificultad() {
         return dificultad;
@@ -122,14 +155,11 @@ public class LearningPath  implements Serializable{
 
     public int getDuracionTotalMinutos() {
         return duracionTotalMinutos;
-    }
+    }  
     
-    
-
     public void setDuracionTotalMinutos(int duracionTotalMinutos) {
 		this.duracionTotalMinutos = duracionTotalMinutos;
 	}
-
 
 	public double getRating() {
         return rating;
@@ -176,6 +206,15 @@ public class LearningPath  implements Serializable{
 	public void setRatings(List<Double> ratings) {
 		this.ratings = ratings;
 	}
+	
+    public static Actividad getActividad(List<Actividad> actividades, String nombre){
+    	for (Actividad act : actividades) {
+            if (act.getTitulo().equalsIgnoreCase(nombre)) {
+                return act;                  
+            }
+        }
+		return null;
+    }
 	
 	
 }

@@ -14,7 +14,7 @@ public class Estudiante extends Usuario implements Serializable{
 	private static final long serialVersionUID = -5625518367852705850L;
 
     private static List<LearningPath> learningPathsInscritos = new ArrayList<>();
-    static List<String> calificaciones = new ArrayList<>();
+    public List<String> calificaciones = new ArrayList<>();
     
 
     public Estudiante(String username, String password, String nombre) {
@@ -55,17 +55,13 @@ public class Estudiante extends Usuario implements Serializable{
     }
 
 
-    public static List<LearningPath> getLearningPathsInscritos() {
+    public List<LearningPath> getLearningPathsInscritos() {
         return learningPathsInscritos;
     }
 
 
-	public static List<String> getCalificaciones() {
+	public List<String> getCalificaciones() {
 		return calificaciones;
 	}
 
-
-	public static void setCalificaciones(List<String> calificaciones) {
-		Estudiante.calificaciones = calificaciones;
-	}
 }

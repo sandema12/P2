@@ -9,8 +9,10 @@ import java.util.List;
 import java.util.Scanner;
 import LearningPath.Actividad;
 import LearningPath.LearningPath;
+import LearningPath.Pregunta;
 import Persistencia.CentralPersistenciaActividades;
 import Persistencia.CentralPersistenciaLearningPath;
+import Persistencia.CentralPersistenciaQuiz;
 import Usuario.Profesor; 
 
 public class ConsolaActividad implements Serializable{
@@ -21,6 +23,7 @@ public class ConsolaActividad implements Serializable{
 	private Scanner entrada;
 	private List<Actividad> actividades = new ArrayList<>();
 	private CentralPersistenciaActividades cpa;
+	private CentralPersistenciaQuiz cpq;
 	
 	
     public ConsolaActividad() {
@@ -43,17 +46,22 @@ public class ConsolaActividad implements Serializable{
 
             switch (opcion) {
                 case 1:
-//                	System.out.print("Ingrese el nombre del Learning Path donde quiere agregar la actividad: ");
-//                    String nombreLp = entrada.nextLine();
-                    
-//                    ArrayList<LearningPath> lista_LP = (ArrayList<LearningPath>) ConsolaProfesor.getLearningPathsCreados();
-//                    LearningPath lp = Profesor.getLearningPath(lista_LP, nombreLp);
                 	
                 	System.out.print("Ingrese el titulo de la actividad: ");
                     String titulo = entrada.nextLine();
                     
                     System.out.print("Ingrese el tipo de actividad: ");
                     String tipo = entrada.nextLine();
+                    
+                    List<Pregunta> preguntas = new ArrayList<>();
+                    if (tipo.equalsIgnoreCase("Quiz")){
+                        ConsolaQuiz consolaQuiz = new ConsolaQuiz();
+                        preguntas = consolaQuiz.mostrarMenu();                        
+                    }
+                    if (tipo.equalsIgnoreCase("Examen")){
+                    	ConsolaExamen consolaExamen = new ConsolaExamen();
+                    	preguntas = consolaExamen.mostrarMenu();
+                    }
                 	
                     System.out.print("Descripción de la actividad: ");
                     String descripcion = entrada.nextLine();
@@ -74,9 +82,14 @@ public class ConsolaActividad implements Serializable{
                     String fechaLimiteStr = entrada.nextLine();
                     LocalDate fechaLimite = LocalDate.parse(fechaLimiteStr, DateTimeFormatter.ISO_LOCAL_DATE);
 
-                	
-                    Actividad act = lp2.agregarActividad(titulo, descripcion, objetivo, dificultad, tipo,  obligatoria, duracionMinutos, fechaLimite);
-                    cpa.guardarActividades(lp2, act);
+                    // revisar
+                    Actividad actividad;
+                    actividad =  new Actividad(titulo, descripcion, objetivo, dificultad, tipo, preguntas, obligatoria, duracionMinutos, fechaLimite);
+                    actividades.add(actividad);
+                                        
+                    cpa.guardarActividades(lp2, actividad);
+                    cpq.guardarQuiz(preguntas, actividad);
+                    System.out.println("------------------------------");
                     
                     break;
                 case 2:
@@ -84,7 +97,8 @@ public class ConsolaActividad implements Serializable{
                     verActividades(lp2);
                     break;
                 case 3:
-                    System.out.println("Fin.");
+                	System.out.println("Volviendo al menu Profesor");
+                    System.out.println("------------------------------");
                     break;
                 default:
                     System.out.println("La opción no es válida");
@@ -100,14 +114,13 @@ public class ConsolaActividad implements Serializable{
 
 
 
-    private void verActividades(LearningPath lp) {
-    	
-    	
+    private void verActividades(LearningPath lp) {   	
     	List<Actividad> actividadesExistentes = lp.getActividades();
     	for (Actividad act : actividadesExistentes) {
     		System.out.println("-------------------------------");
     		System.out.println("Titulo:" + act.getTitulo());
     		System.out.println("Tipo:" + act.getTipo());
+    		System.out.println("Preguntas:" + act.getEnunciados(act));
     		System.out.println("Descripcion:" + act.getDescripcion());
     		System.out.println("Objetivo:" + act.getObjetivo());
     		System.out.println("Dificultad:" + act.getDificultad());

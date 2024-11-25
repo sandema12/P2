@@ -7,6 +7,7 @@ import java.util.Scanner;
 
 import LearningPath.Actividad;
 import LearningPath.LearningPath;
+import Persistencia.CentralPersistenciaActividades;
 import Persistencia.CentralPersistenciaLearningPath;
 import Usuario.Profesor;
 import Usuario.Estudiante;
@@ -16,6 +17,7 @@ public class ConsolaEstudiante {
     
     private Scanner entrada;
     private CentralPersistenciaLearningPath cpl;
+    private CentralPersistenciaActividades cpa;
     
 
     public ConsolaEstudiante() {
@@ -28,12 +30,12 @@ public class ConsolaEstudiante {
         int opcion;
         
         do {
-            System.out.println("1. Ver Learning Paths"); //bien
-            System.out.println("2. Inscribir Learning Path"); //revisar
-            System.out.println("3. Iniciar Actividad"); //revisar
-            System.out.println("4. Ver Calificaciones"); //bien
-            System.out.println("5. Dejar Reseña"); //bien
-            System.out.println("6. Volver");
+            System.out.println("1. Ver Learning Paths");
+            System.out.println("2. Inscribir Learning Path");
+            System.out.println("3. Iniciar Actividad");
+            System.out.println("4. Ver Calificaciones");
+            System.out.println("5. Dejar Reseña");
+            System.out.println("6. Cerrrar Sesión");
             System.out.print("Elija una opción: ");
             opcion = entrada.nextInt();
             entrada.nextLine(); 
@@ -55,7 +57,8 @@ public class ConsolaEstudiante {
                     dejarReseña();
                     break;
                 case 6:
-                    System.out.println("Fin.");
+                	System.out.println("Sesion cerrada");
+                    System.out.println("------------------------------");
                     break;
                 default:
                     System.out.println("La opción no es válida.");
@@ -63,17 +66,21 @@ public class ConsolaEstudiante {
         } while (opcion != 6);
     }
     
-    private void verLearningPaths() {
+    private void verLearningPaths() throws ClassNotFoundException, IOException {
         
     	List<LearningPath> lp_creados = ConsolaProfesor.getLearningPathsCreados();
     	for (LearningPath lp : lp_creados) {
+    		String nombre = lp.getTitulo();
     		System.out.println("-------------------------------");
-    		System.out.println("Nombre LP: " + lp.getTitulo());
+    		System.out.println("Nombre LP: " + nombre);
     		System.out.println("Actividades:");
+    		cpa.cargarActividades(nombre);
+    		
     		List<Actividad> actividades = lp.getActividades();
     		for (Actividad act : actividades) {
     			System.out.println("- " + act.getTitulo());
-    			System.out.println("Descripcion: " + act.getDescripcion());
+    			System.out.println("	Descripcion: " + act.getDescripcion());
+    			System.out.println("	Tipo: " + act.getTipo());
     		}
     		System.out.println("-------------------------------");
     	}
@@ -88,6 +95,7 @@ public class ConsolaEstudiante {
     		if (lp.getTitulo().equals(inscribir)) {
     			Estudiante.inscribirseEnLearningPath(lp);
     			System.out.println("Se ha inscrito exitosamente el Learning Path: " + inscribir);
+    			System.out.println("------------------------------");
     		}
     	
     	}
@@ -108,8 +116,7 @@ public class ConsolaEstudiante {
     	List<Actividad> actividadesCreadas = lp.getActividades();
     	for (Actividad act : actividadesCreadas) {
     		if (act.getTitulo().equals(actividad)) {
-    			Actividad actividad2 = new Actividad(null, null, null, null, null, false, 0, null);
-				actividad2.completarActividad(act);
+    			act.completarActividad(act);
     		}
     	}
     	}
@@ -155,6 +162,7 @@ public class ConsolaEstudiante {
     	
         Profesor.añadirReseña(nombreLp, calificacion, feedback);
         System.out.println("Reseña dejada exitosamente.");
+        System.out.println("------------------------------");
         
     }
 }

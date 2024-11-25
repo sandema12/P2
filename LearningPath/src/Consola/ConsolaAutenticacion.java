@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import InterfazGrafica.InterfazAutenticación;
 import Persistencia.centralPersistenciaUsuarios;
 import Usuario.Estudiante;
 import Usuario.Profesor;
@@ -19,12 +20,13 @@ public class ConsolaAutenticacion {
 
 
 	centralPersistenciaUsuarios centralPersistenciaUsuarios;
+	InterfazAutenticación iA;
 	private Scanner entrada;
 	
 	
     public ConsolaAutenticacion() {
         entrada = new Scanner(System.in);
-        centralPersistenciaUsuarios = new centralPersistenciaUsuarios(this);
+//        centralPersistenciaUsuarios = new centralPersistenciaUsuarios(this);
     }
 	
 	

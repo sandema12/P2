@@ -11,20 +11,14 @@ public class ConsolaRespuestaExamen {
 
     public ConsolaRespuestaExamen() {
         entrada = new Scanner(System.in);
-        respuestas = new ArrayList<>();
+        this.respuestas = new ArrayList<>();
     }
     
     public void mostrarMenu() {
-		
-        String opcion;
-        
-        
+		     
             System.out.println("Ingrese su respuesta: ");
-            opcion = entrada.next();
-            respuestas.add(opcion);
-            entrada.nextLine();
-            
-
+            String opcion = entrada.nextLine();
+            respuestas.add(opcion);        
             
     }
 

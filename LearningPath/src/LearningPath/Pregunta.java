@@ -3,14 +3,18 @@ package LearningPath;
 import java.io.Serializable;
 import java.util.List;
 
-public class Pregunta  {
+public class Pregunta implements Serializable {
 
-    private String enunciado; 
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private String enunciado; 
     private List<String> opciones;
     private String respuestaCorrecta; 
-    private double puntaje; 
+    private double puntaje;
 
-    public Pregunta(String enunciado, List<String> opciones, String respuestaCorrecta, double puntaje) {
+    public Pregunta(String enunciado, List<String> opciones, String respuestaCorrecta) {
         this.enunciado = enunciado;
         this.opciones = opciones;
         this.respuestaCorrecta = respuestaCorrecta;

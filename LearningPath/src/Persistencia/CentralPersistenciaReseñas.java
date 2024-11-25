@@ -12,6 +12,7 @@ import Consola.ConsolaProfesor;
 import LearningPath.LearningPath;
 import Usuario.Profesor;
 import Usuario.Reseña;
+import VentanasProfesor.VentanaCrearLP;
 
 public class CentralPersistenciaReseñas {
 	
@@ -45,7 +46,7 @@ public class CentralPersistenciaReseñas {
     public static void cargarResenas(String nombre) throws IOException, ClassNotFoundException {
     	ArrayList<Reseña> resenas;
     	ArrayList<LearningPath> lps;
-    	lps = (ArrayList<LearningPath>) ConsolaProfesor.getLearningPathsCreados();
+    	lps = (ArrayList<LearningPath>) VentanaCrearLP.getLearningPathsCreados();
         LearningPath lp = Profesor.getLearningPath(lps, nombre);
         	
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("./data/resenas/resenas_" + nombre + ".data"))) {
